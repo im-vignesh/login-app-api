@@ -53,3 +53,5 @@
   root-package = "https://github.com/vikygeek/login-app-api"
   go-version = "1.12.6"
   install = [ "./..." ]
+
+ignored = ["login-app-api/handler","login-app-api/modals"]
