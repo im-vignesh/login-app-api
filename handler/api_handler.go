@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"login-app-api/modals"
+	"../modals"
 	"database/sql"
 	"encoding/json"
 	"fmt"

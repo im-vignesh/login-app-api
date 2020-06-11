@@ -1,7 +1,7 @@
 package main
 
 import (
-	"login-app-api/handler"
+	"./handler"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
