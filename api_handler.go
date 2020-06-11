@@ -12,14 +12,15 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
-const (
-	host     = "localhost"
+var (
+	host     = os.Getenv("DATABASE_URL")
 	port     = 5432
-	user     = "root"
-	password = "toor"
-	dbname   = "postgres"
+	user     = os.Getenv("USER")
+	password = os.Getenv("PASSWORD")
+	dbname   = os.Getenv("DATABASE_URL")
 )
 
 //Showcase all the user details in basic
@@ -594,7 +595,7 @@ func getDBConnection() *sql.DB{
 	host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Couldn't connect to PostgresSQL Server ",err.Error())
 		return nil
 	}
 	return db
