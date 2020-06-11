@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
-	"github.com/vikygeek/handlers"
+	"github.com/vikygeek/login-app-api/handlers"
 	"net/http"
 	"os"
 	"time"
@@ -23,7 +23,7 @@ func main() {
 		AllowedHeaders: []string{"Content-Type","Authorization"},
 		AllowedMethods: []string{"GET","POST","PUT","DELETE"},
 	}).Handler(r)
-	port := os.Getenv("$PORT")
+	port := os.Getenv("PORT")
 	srv := &http.Server{
 		Handler:      handler,
 		Addr:         ":"+port,            //5500 - Production; 5501 -Development
