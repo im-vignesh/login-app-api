@@ -1,4 +1,4 @@
-package main
+package modals
 
 type User struct {
 	Id int `json:"id"`
