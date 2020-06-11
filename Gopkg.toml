@@ -54,4 +54,4 @@
   go-version = "1.12.6"
   install = [ "./..." ]
 
-ignored = ["login-app-api/handler","login-app-api/modals"]
+ignored = ["github.com/vikygeek/login-app-api*"]
