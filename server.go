@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
-	"login-app-api/handlers"
+	"./handlers"
 	"net/http"
 	"time"
 )
