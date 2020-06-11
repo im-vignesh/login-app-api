@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	host     = os.Getenv("DATABASE_URL")
+	host     = os.Getenv("DB_HOST")
 	port     = 5432
 	user     = os.Getenv("USER")
 	password = os.Getenv("PASSWORD")

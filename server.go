@@ -31,6 +31,6 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	fmt.Println("--Server Started--")
+	fmt.Println("--Server Started @", port,"--")
 	log.Fatal(srv.ListenAndServe())
 }
