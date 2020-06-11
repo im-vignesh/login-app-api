@@ -598,7 +598,6 @@ func hitLinkedApi(url string, method string, access_token string) (string,error)
 func getDBConnection() *sql.DB{
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+ "password=%s dbname=%s sslmode=disable",
 	host, port, user, password, dbname)
-	fmt.Println("PGSQL info ",psqlInfo)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Fatal("Couldn't connect to PostgresSQL Server ",err.Error())
