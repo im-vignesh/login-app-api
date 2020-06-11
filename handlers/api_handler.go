@@ -11,7 +11,7 @@ import (
 	"golang.org/x/oauth2"
 	"io/ioutil"
 	"log"
-	"github.com/vikygeek/modals"
+	"github.com/vikygeek/login-app-api/modals"
 	"net/http"
 	"os"
 )
