@@ -205,6 +205,10 @@ func SearchUserHandler (w http.ResponseWriter, r *http.Request){
 	basedOn := r.URL.Query().Get("based_on")
 	db := getDBConnection()
 	defer db.Close()
+	if db == nil {
+		http.Error(w, "Couldn't establish db connection",http.StatusInternalServerError)
+		return
+	}
 	switch basedOn {
 	case "phone_no":
 		sqlStatement := `SELECT * FROM user_details WHERE phonenumber=$1`
@@ -594,6 +598,7 @@ func hitLinkedApi(url string, method string, access_token string) (string,error)
 func getDBConnection() *sql.DB{
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+ "password=%s dbname=%s sslmode=disable",
 	host, port, user, password, dbname)
+	fmt.Println("PGSQL info ",psqlInfo)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Fatal("Couldn't connect to PostgresSQL Server ",err.Error())
