@@ -1,7 +1,6 @@
-package handler
+package main
 
 import (
-	"../modals"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -38,9 +37,9 @@ func GetAllUserHandler(w http.ResponseWriter, r *http.Request){
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	var users []modals.User
+	var users []User
 	for rows.Next(){
-		var user modals.User
+		var user User
 		var email, phone, meta, linkedInId sql.NullString
 		if err := rows.Scan(&user.Id, &user.Name, &email, &phone, &meta, &user.Github.Id, &linkedInId); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -87,7 +86,7 @@ func GetUserDetailHandler(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	row := db.QueryRow(sqlStatement, id)
-	var user modals.User
+	var user User
 	var email, phone, meta, linkedInId sql.NullString
 	if err := row.Scan(&user.Id, &user.Name, &email, &phone, &meta, &user.Github.Id, &linkedInId); err != nil {
 		if err == sql.ErrNoRows {
@@ -213,9 +212,9 @@ func SearchUserHandler (w http.ResponseWriter, r *http.Request){
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		var users []modals.User
+		var users []User
 		for rows.Next(){
-			var user modals.User
+			var user User
 			var email, phone, meta, linkedInId sql.NullString
 			if err := rows.Scan(&user.Id, &user.Name, &email, &phone, &meta, &user.Github.Id, &linkedInId); err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -294,13 +293,13 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 					return
 				}
 			}
-			var githubMetadata modals.GithubMeta
+			var githubMetadata GithubMeta
 			githubMetadata.NoOfFollowers = user.GetFollowers()
 			githubMetadata.NoOfFollowing = user.GetFollowing()
 			githubMetadata.NoOfPrivateRepos = user.GetTotalPrivateRepos()
 			githubMetadata.NoOfPublicRepos = user.GetPublicRepos()
 			if isFound {
-				var metaData modals.MetaData
+				var metaData MetaData
 				if err := json.Unmarshal([]byte(meta.String), &metaData); err != nil {
 					http.Error(w, err.Error(),http.StatusInternalServerError)
 					return
@@ -329,7 +328,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 				}
 				fmt.Println("Hurray Updated Meta With Email")
 			} else {
-				var metaData modals.MetaData
+				var metaData MetaData
 				metaData.Github = githubMetadata
 				metaDataByte,_ := json.Marshal(metaData)
 				sqlStatement = `INSERT INTO user_details (name,mailid,meta, github_id) VALUES ($1, $2, $3, $4);`
@@ -363,7 +362,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(),http.StatusInternalServerError)
 				return
 			}
-			var metaData modals.MetaData
+			var metaData MetaData
 			metaData.Github.NoOfFollowers = user.GetFollowers()
 			metaData.Github.NoOfFollowing = user.GetFollowing()
 			metaData.Github.NoOfPrivateRepos = user.GetTotalPrivateRepos()
@@ -419,7 +418,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(),http.StatusInternalServerError)
 			return
 		}
-		var authResponse modals.AuthResponse
+		var authResponse AuthResponse
 		authResponse.Id = id
 		authResponse.Name = name.String
 		authResponse.EmailID = mailid.String
@@ -433,7 +432,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 		w.Write(authResByte)
 	case "linkedin":
 		var email string
-		var metadataLinkedIn modals.LinkedInMeta
+		var metadataLinkedIn LinkedInMeta
 		details,err:=hitLinkedApi("https://api.linkedin.com/v2/me", "GET", r.Header.Get("Authorization"))
 		if err != nil {
 			http.Error(w, err.Error(),http.StatusInternalServerError)
@@ -469,7 +468,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		fmt.Println(email)
-		var metadata modals.MetaData
+		var metadata MetaData
 		if count > 0 {
 			if err := json.Unmarshal([]byte(metadataSQLString.String), &metadata); err != nil {
 				http.Error(w, err.Error(),http.StatusInternalServerError)
@@ -495,7 +494,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Println("CREATEDDDDDDD")
 		}
-		var authResponse modals.AuthResponse
+		var authResponse AuthResponse
 		var isSetPassword bool
 		sqlStatement=`SELECT id FROM user_details WHERE mailid=$1`
 		row = db.QueryRow(sqlStatement, email)
@@ -550,7 +549,7 @@ func Authentication (w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if actualPassword == password {
-			var authResponse modals.AuthResponse
+			var authResponse AuthResponse
 			authResponse.Id= id
 			authResponse.Name = name
 			authResponse.EmailID = emailid
