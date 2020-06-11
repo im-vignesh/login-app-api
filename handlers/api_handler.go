@@ -604,6 +604,7 @@ func getDBConnection() *sql.DB{
 		log.Fatal("Couldn't connect to PostgresSQL Server ",err.Error())
 		return nil
 	}
+	fmt.Println("Connection Established...")
 	return db
 }
 
