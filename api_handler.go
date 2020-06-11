@@ -20,7 +20,7 @@ var (
 	port     = 5432
 	user     = os.Getenv("USER")
 	password = os.Getenv("PASSWORD")
-	dbname   = os.Getenv("DATABASE_URL")
+	dbname   = os.Getenv("DATABASE")
 )
 
 //Showcase all the user details in basic
