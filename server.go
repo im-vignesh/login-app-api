@@ -5,8 +5,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
-	"github.com/vikygeek/login-app-api/handlers"
+	"github.com/vikygeek/handlers"
 	"net/http"
+	"os"
 	"time"
 )
 func main() {
@@ -22,9 +23,10 @@ func main() {
 		AllowedHeaders: []string{"Content-Type","Authorization"},
 		AllowedMethods: []string{"GET","POST","PUT","DELETE"},
 	}).Handler(r)
+	port := os.Getenv("$PORT")
 	srv := &http.Server{
 		Handler:      handler,
-		Addr:         ":5501",            //5500 - Production; 5501 -Development
+		Addr:         ":"+port,            //5500 - Production; 5501 -Development
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
